@@ -1,5 +1,22 @@
+const override = (that, fun, ride) => {
+  that[fun] = ride(that[fun]);
+};
 
-import { createMainCanvas } from '../public/js/main.js';
+override(window, 'fetch', (origin) => {
+  return (...args) => {
+    if (args[0].startsWith('/levels')) {
+      args[0] = args[0].replace('/levels', './public/levels');
+    }
+    if (args[0].startsWith('/img')) {
+      args[0] = args[0].replace('/img', './public/img');
+    }
+
+    console.log('fetch', ...args);
+    return origin(...args);
+  };
+});
+
+import { createMainCanvas, App } from '../src/main.js';
 
 describe("Canvas suite", () => {
   it("should be able to create a canvas", () => {
@@ -8,7 +25,6 @@ describe("Canvas suite", () => {
     expect(canvas).toBeDefined();
     expect(canvas).not.toBe(null);
   })
-
 
   it('should create the game canvas on body', () => {
     const canvas = createMainCanvas();
@@ -33,4 +49,34 @@ describe("Canvas suite", () => {
     expect(canvas).not.toBeDefined();
   })
 })
+
+
+describe("App ", () => {
+  it("should exist", () => {
+    const app = new App();
+    expect(app).toBeDefined();
+    expect(app).not.toBe(null);
+  })
+
+  it('should start', () => {
+    const app = new App();
+    app.init(createMainCanvas());
+  })
+
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

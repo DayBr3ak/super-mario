@@ -1,12 +1,17 @@
 module.exports = function(config) {
   config.set({
     preprocessors: {
-      'public/**/*.js': ['webpack'],
+      'src/**/*.js': ['webpack'],
       'test/**/*.js': ['webpack']
     },
 
     frameworks: ['jasmine'],
-    files: ['test/**/*.js'],
+    files: [
+        'test/**/*.js',
+        { pattern: 'public/**/*.gif', included: false, served: true },
+        { pattern: 'public/**/*.png', included: false, served: true },
+        { pattern: 'public/**/*.json', included: false, served: true }
+    ],
     reporters: ['progress'],
     port: 9876,  // karma web server port
     colors: true,
