@@ -6,8 +6,12 @@ import {createCollisionLayer, createCameraLayer} from './layers.js';
 import {setupKeyboard} from './input.js';
 import {setupMouseControl} from './debug.js';
 
-const canvas = document.getElementById('screen');
+const anchor = document.getElementById('game');
+const canvas = document.createElement('canvas');
+canvas.setAttribute('width', 640);
+canvas.setAttribute('height', 640);
 const context = canvas.getContext('2d');
+anchor.appendChild(canvas);
 
 Promise.all([
     createMario(),
@@ -30,7 +34,6 @@ Promise.all([
     input.listenTo(window);
 
     setupMouseControl(canvas, mario, camera);
-
 
     const timer = new Timer(1/60);
     timer.update = function update(deltaTime) {
