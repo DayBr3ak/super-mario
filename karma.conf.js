@@ -8,14 +8,11 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
     files: [
         'test/**/*.js',
-        { pattern: 'public/**/*.gif', watched: false, included: false, served: true, nocache: false },
-        { pattern: 'public/**/*.png', watched: false, included: false, served: true, nocache: false },
-        { pattern: 'public/**/*.json', watched: false, included: false, served: true, nocache: false }
+        { pattern: 'public/assets/**/*.json', watched: true, included: false, served: true, nocache: false },
+        { pattern: 'public/assets/**/*', watched: false, included: false, served: true, nocache: false },
     ],
     proxies: {
-        '/img/': '/base/public/img/',
-        '/levels/': '/base/public/levels/',
-        '/sprites/': '/base/public/sprites/'
+        '/assets/': '/base/public/assets/'
     },
     reporters: ['progress'],
     port: 9876,  // karma web server port

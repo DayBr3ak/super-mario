@@ -88,6 +88,12 @@ describe("App ", () => {
     expect(app).not.toBe(null);
   })
 
+  it('fetches', (done) => {
+    fetch('/assets/img/tiles.png')
+      .catch(err => expect(err).not.toBeDefined())
+      .then(done);
+  })
+
   it('should start', (done) => {
     const app = new App();
     app.init(createMainCanvas())
@@ -100,12 +106,6 @@ describe("App ", () => {
         console.error(err.stack)
         expect(err).not.toBeDefined();
       })
-      .then(done);
-  })
-
-  it('fetches', (done) => {
-    fetch('/img/tiles.png')
-      .catch(err => expect(err).not.toBeDefined())
       .then(done);
   })
 
