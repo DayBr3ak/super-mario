@@ -4,15 +4,10 @@ const override = (that, fun, ride) => {
 
 override(window, 'fetch', (origin) => {
   return (...args) => {
-    if (args[0].startsWith('/levels')) {
-      args[0] = args[0].replace('/levels', './public/levels');
-    }
-    if (args[0].startsWith('/img')) {
-      args[0] = args[0].replace('/img', './public/img');
-    }
-
     console.log('fetch', ...args);
-    return origin(...args);
+    const response = origin(...args);
+    response.then(r => console.log('fetch STATUS', r.status));
+    return response;
   };
 });
 
@@ -93,9 +88,25 @@ describe("App ", () => {
     expect(app).not.toBe(null);
   })
 
-  it('should start', () => {
+  it('should start', (done) => {
     const app = new App();
-    app.init(createMainCanvas());
+    app.init(createMainCanvas())
+      .then(() => {
+        expect(app.loop).not.toBe(null);
+        app.loop.stop();
+        app.canvas.remove();
+      })
+      .catch(err => {
+        console.error(err.stack)
+        expect(err).not.toBeDefined();
+      })
+      .then(done);
+  })
+
+  it('fetches', (done) => {
+    fetch('/img/tiles.png')
+      .catch(err => expect(err).not.toBeDefined())
+      .then(done);
   })
 
 })

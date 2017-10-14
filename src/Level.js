@@ -13,16 +13,20 @@ export default class Level {
         this.tileCollider = new TileCollider(this.tiles);
     }
 
+    addEntity(entity) {
+        if (this.entities.has(entity)) {
+            return;
+        }
+        this.entities.add(entity);
+        let collision;
+        if (collision = entity.getTrait('collision')) {
+            collision.tileCollider = this.tileCollider;
+        }
+    }
+
     update(deltaTime) {
         this.entities.forEach(entity => {
             entity.update(deltaTime);
-
-            entity.pos.x += entity.vel.x * deltaTime / 1000;
-            this.tileCollider.checkX(entity);
-
-            entity.pos.y += entity.vel.y * deltaTime / 1000;
-            this.tileCollider.checkY(entity);
-
             entity.vel.y += this.gravity * deltaTime;
         });
     }

@@ -13,12 +13,15 @@ export function setupKeyboard(entity) {
         }
     });
 
+    let rightMove = 0, leftMove = 0;
     input.addMapping('ArrowRight', keyState => {
-        goTrait.dir = keyState;
+        rightMove = keyState;
+        goTrait.dir = rightMove + leftMove;
     });
 
     input.addMapping('ArrowLeft', keyState => {
-        goTrait.dir = -keyState;
+        leftMove = -keyState;
+        goTrait.dir = rightMove + leftMove;
     });
 
     return input;

@@ -18,6 +18,8 @@ export default class Entity {
 
         this.traits = [];
         this.traitsMap = new Map();
+        this.sharedState = {};
+        this.resetState = null;
     }
 
     addTrait(trait) {
@@ -30,6 +32,8 @@ export default class Entity {
     }
 
     update(deltaTime) {
+        if (this.resetState)
+            this.resetState();
         this.traits.forEach(trait => {
             trait.update(this, deltaTime);
         });
