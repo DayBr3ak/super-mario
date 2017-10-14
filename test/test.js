@@ -17,6 +17,7 @@ override(window, 'fetch', (origin) => {
 });
 
 import { createMainCanvas, App } from '../src/main.js';
+import Entity from '../src/Entity.js';
 
 describe("Canvas suite", () => {
   it("should be able to create a canvas", () => {
@@ -50,6 +51,40 @@ describe("Canvas suite", () => {
   })
 })
 
+
+describe('Entity', () => {
+  let entity;
+  beforeEach(() => {
+    entity = new Entity();
+  })
+
+  afterEach(() => {
+    entity = null;
+  })
+
+  it('should exist', () => {
+    expect(entity).toBeDefined();
+    expect(entity).not.toBe(null);
+    expect(entity.traits.length).toBe(0)
+  })
+
+  it('should update traits', () => {
+    let updateCount = 0;
+    const makeTrait = () => {
+      // mocking traits here
+      return {
+        update: () => {
+          updateCount += 1;
+        }
+      }
+    }
+    entity.addTrait(makeTrait('trait1'))
+    entity.addTrait(makeTrait('trait2'))
+    expect(entity.traits.length).toBe(2);
+    entity.update(0);
+    expect(updateCount).toBe(2);
+  })
+})
 
 describe("App ", () => {
   it("should exist", () => {

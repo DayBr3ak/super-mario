@@ -4,7 +4,7 @@ export default class Jump extends Trait {
     constructor() {
         super('jump');
 
-        this.duration = 0.5;
+        this.duration = 500;
         this.engageTime = 0;
 
         this.velocity = 200;
@@ -21,7 +21,7 @@ export default class Jump extends Trait {
     update(entity, deltaTime) {
         if (this.engageTime > 0) {
             entity.vel.y = -this.velocity;
-            this.engageTime -= deltaTime;
+            this.engageTime -= deltaTime ;
         }
     }
 }

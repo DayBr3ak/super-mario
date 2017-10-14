@@ -2,21 +2,23 @@ import Keyboard from './KeyboardState.js';
 
 export function setupKeyboard(entity) {
     const input = new Keyboard();
+    const goTrait = entity.getTrait('go');
+    const jumpTrait = entity.getTrait('jump');
 
     input.addMapping('Space', keyState => {
         if (keyState) {
-            entity.jump.start();
+            jumpTrait.start();
         } else {
-            entity.jump.cancel();
+            jumpTrait.cancel();
         }
     });
 
     input.addMapping('ArrowRight', keyState => {
-        entity.go.dir = keyState;
+        goTrait.dir = keyState;
     });
 
     input.addMapping('ArrowLeft', keyState => {
-        entity.go.dir = -keyState;
+        goTrait.dir = -keyState;
     });
 
     return input;

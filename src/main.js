@@ -1,5 +1,5 @@
 import Camera from './Camera.js';
-import Timer from './Timer.js';
+import MainLoop from './MainLoop.js';
 import {loadLevel} from './loaders.js';
 import {createMario} from './entities.js';
 import {createCollisionLayer, createCameraLayer} from './layers.js';
@@ -44,6 +44,7 @@ export class App {
     window.camera = camera;
 
     mario.pos.set(64, 64);
+    window.mario = mario
 
     level.comp.layers.push(
       createCollisionLayer(level),
@@ -56,14 +57,27 @@ export class App {
 
     setupMouseControl(this.canvas, mario, camera);
 
-    const timer = new Timer(1/60);
-    timer.update = function update(deltaTime) {
+    this.loop = new MainLoop(60);
+    this.loop.setUpdate(deltaTime => {
       level.update(deltaTime);
+    })
 
+    this.loop.setDraw(() => {
       level.comp.draw(context, camera);
-    }
+    })
 
-    timer.start();
+    this.loop.setEnd((fps, panic) => {
+      if (panic) {
+        // This pattern introduces non-deterministic behavior, but in this case
+        // it's better than the alternative (the application would look like it
+        // was running very quickly until the simulation caught up to real
+        // time). See the documentation for `MainLoop.setEnd()` for additional
+        // explanation.
+        var discardedTime = Math.round(this.loop.resetFrameDelta());
+        console.warn('Main loop panicked, probably because the browser tab was put in the background. Discarding ' + discardedTime + 'ms');
+      }
+    })
+    this.loop.start();
   }
 }
 

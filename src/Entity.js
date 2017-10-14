@@ -17,11 +17,16 @@ export default class Entity {
         this.size = new Vec2(0, 0);
 
         this.traits = [];
+        this.traitsMap = new Map();
     }
 
     addTrait(trait) {
         this.traits.push(trait);
-        this[trait.NAME] = trait;
+        this.traitsMap.set(trait.NAME, trait);
+    }
+
+    getTrait(traitName) {
+        return this.traitsMap.get(traitName);
     }
 
     update(deltaTime) {
